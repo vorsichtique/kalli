@@ -13,16 +13,19 @@ class RecordRepository extends ServiceEntityRepository
         parent::__construct($registry, Record::class);
     }
 
-    /*
-    public function findBySomething($value)
+    public function getForDay(\DateTime $day)
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.something = :value')->setParameter('value', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $from = new \DateTime($day->format("Y-m-d")." 00:00:00");
+        $to   = new \DateTime($day->format("Y-m-d")." 23:59:59");
+
+        $qb = $this->createQueryBuilder("e");
+        $qb
+            ->andWhere('e.day BETWEEN :from AND :to')
+            ->setParameter('from', $from )
+            ->setParameter('to', $to)
+          //  ->orderBy('e.start')
         ;
+        return $qb->getQuery()->getResult();
     }
-    */
+
 }

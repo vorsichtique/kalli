@@ -29,7 +29,7 @@ class RecordController extends Controller
             return $this->redirectToRoute('index');
         }
 
-        $records = $this->getDoctrine()->getManager()->getRepository(Record::class)->findAll();
+        $records = $this->getDoctrine()->getManager()->getRepository(Record::class)->getForDay(new \DateTime());
         $sum = 0;
         foreach ($records as $rec){
            $sum += $rec->getCalories();
