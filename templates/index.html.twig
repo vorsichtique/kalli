@@ -4,12 +4,12 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Calories/100g</th>
-                <th>Amount</th>
-                <th>Calories</th>
-            </tr>
+        <tr>
+            <th style="min-width: 150px">Name</th>
+            <th>C/100g</th>
+            <th>Amount</th>
+            <th>Cals</th>
+        </tr>
         </thead>
         <tbody>
         {% for record in records %}
@@ -20,13 +20,20 @@
                 <td>{{ record.calories }}</td>
             </tr>
         {% endfor %}
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><b>{{ sum }}</b></td>
-            </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>{{ sum }}</b></td>
+        </tr>
+        <tr>
+            {{ form_start(form) }}
+            <td>{{ form_row(form.name) }}</td>
+            <td>{{ form_row(form.caloriesperhundredgram) }}</td>
+            <td>{{ form_row(form.amount) }}</td>
+            <td> {{ form_row(form.submit) }}</td>
+            {{ form_end(form) }}
+        </tr>
         </tbody>
     </table>
-    {{ form(form) }}
 {% endblock %}
