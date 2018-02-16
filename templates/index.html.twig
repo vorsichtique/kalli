@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <u>
+    {% for record in records %}
+        <li>{{ record.name }}</li>
+        <li>{{ record.calories }}</li>
+        <li>{{ record.amount }}</li>
+    {% endfor %}
+    </u>
+    {{ form(form) }}
+{% endblock %}
