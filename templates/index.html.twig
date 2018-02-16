@@ -1,12 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <u>
-    {% for record in records %}
-        <li>{{ record.name }}</li>
-        <li>{{ record.calories }}</li>
-        <li>{{ record.amount }}</li>
-    {% endfor %}
-    </u>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Calories/100g</th>
+                <th>Amount</th>
+                <th>Calories</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for record in records %}
+            <tr>
+                <td>{{ record.name }}</td>
+                <td>{{ record.caloriesperhundredgram }}</td>
+                <td>{{ record.amount }}</td>
+                <td>{{ record.calories }}</td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ sum }}</td>
+            </tr>
+        </tbody>
+    </table>
     {{ form(form) }}
 {% endblock %}

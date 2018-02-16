@@ -26,12 +26,21 @@ class RecordController extends Controller
             $em->persist($record);
             $em->flush();
 
-            $this->redirectToRoute('index');
+            return $this->redirectToRoute('index');
         }
 
         $records = $this->getDoctrine()->getManager()->getRepository(Record::class)->findAll();
+        $sum = 0;
+        foreach ($records as $rec){
+           $sum += $rec->getCalories();
+        }
 
         // replace this line with your own code!
-        return $this->render('index.html.twig', ['records' => $records, 'form' => $form->createView()]);
+        return $this->render('index.html.twig',
+            [
+                'records' => $records,
+                'form' => $form->createView(),
+                'sum' => $sum
+            ]);
     }
 }

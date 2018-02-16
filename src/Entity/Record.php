@@ -26,7 +26,7 @@ class Record
      * @var int
      * @ORM\Column(type="integer")
      */
-    private $calories;
+    private $caloriesPerHundredGram;
 
     /**
      * @var string
@@ -67,17 +67,17 @@ class Record
     /**
      * @return int
      */
-    public function getCalories(): ?int
+    public function getCaloriesPerHundredGram(): ?int
     {
-        return $this->calories;
+        return $this->caloriesPerHundredGram;
     }
 
     /**
-     * @param int $calories
+     * @param int $caloriesPerHundredGram
      */
-    public function setCalories(int $calories): void
+    public function setCaloriesPerHundredGram(int $caloriesPerHundredGram): void
     {
-        $this->calories = $calories;
+        $this->caloriesPerHundredGram = $caloriesPerHundredGram;
     }
 
     /**
@@ -118,5 +118,9 @@ class Record
     public function setDay(\DateTime $day): void
     {
         $this->day = $day;
+    }
+
+    public function getCalories(): int {
+        return (int) $this->caloriesPerHundredGram * $this->amount;
     }
 }

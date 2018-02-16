@@ -14,7 +14,7 @@ class RecordType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('calories')
+            ->add('caloriesperhundredgram')
             ->add('amount')
             ->add('submit', SubmitType::class)
         ;
