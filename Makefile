@@ -2,9 +2,9 @@ dev: composer
 	docker-compose up
 
 prod: yarn
-	docker-compose run app composer install --no-dev --optimize-autoloader
+	docker-compose run -e APP_ENV=prod app composer install --no-dev --optimize-autoloader
 	docker-compose run node yarn run encore production
-	docker-compose -f docker-compose.yml -f docker-compose-production.yml up --build
+	docker-compose up --build
 
 test:
 	docker-compose run app sh -c "APP_ENV='test' && DATABASE_URL=sqlite:///%kernel.project_dir%/var/test.db && php bin/console doctrine:schema:update --force && ./vendor/bin/simple-phpunit"
