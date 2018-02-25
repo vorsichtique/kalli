@@ -2,32 +2,12 @@ version: '3'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    depends_on:
-      - db
+    image: malulu/php-7.1:latest
     environment:
-      - DATABASE_URL=mysql://symfony:symfony@db:3306/symfony
+      - DATABASE_URL=sqlite:///%kernel.project_dir%/var/data.db
       - LOCALE=en
-      - APP_ENV=dev
     volumes:
       - .:/srv/symfony:rw
-  db:
-    build:
-      context: ./docker/db
-      dockerfile: ./Dockerfile
-    expose:
-      - 3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=symfony
-      - MYSQL_DATABASE=symfony
-      - MYSQL_PASSWORD=symfony
-      - MYSQL_USER=symfony
-    volumes:
-      - db-data:/var/lib/mysql:rw
-      # for sql dumps
-      - ./sql-dumps:/var/sql-dumps:rw
   nginx:
     build:
       context: ./docker/nginx
@@ -35,9 +15,10 @@ services:
     expose:
         - 80
     volumes:
-      # Comment out the next line in production
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./public:/srv/symfony/public:ro
-
-volumes:
-  db-data: {}
+  node:
+    image: "node:8"
+    user: "root"
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
