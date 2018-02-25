@@ -1,9 +1,8 @@
 dev: composer
 	docker-compose up
 
-prod: yarn
+prod:
 	docker-compose run -e APP_ENV=prod app composer install --no-dev --optimize-autoloader
-	docker-compose run node yarn run encore production
 	docker-compose up --build
 
 test:
