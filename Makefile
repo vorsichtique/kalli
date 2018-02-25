@@ -2,8 +2,8 @@ dev: composer
 	docker-compose up
 
 prod:
-	docker-compose run -e APP_ENV=prod app composer install --no-dev --optimize-autoloader
-	docker-compose -e APP_ENV=prod up --build
+	docker-compose -f docker-compose.yml -f docker-compose-production.yml up --build
+	docker-compose exec app composer install --no-dev --optimize-autoloader
 
 test:
 	docker-compose run app sh -c "APP_ENV='test' && DATABASE_URL=sqlite:///%kernel.project_dir%/var/test.db && php bin/console doctrine:schema:update --force && ./vendor/bin/simple-phpunit"
