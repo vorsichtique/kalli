@@ -1,36 +1,34 @@
-dev: composer
-	docker-compose up
+dev: down up logs
 
-prod:
-	docker-compose -f docker-compose.yml -f docker-compose-production.yml up --build
-	docker-compose exec app composer install --no-dev --optimize-autoloader
+prod: down prod-up permissions
 
-test:
-	docker-compose run app sh -c "APP_ENV='test' && DATABASE_URL=sqlite:///%kernel.project_dir%/var/test.db && php bin/console doctrine:schema:update --force && ./vendor/bin/simple-phpunit"
+prod-up:
+	docker-compose -f docker-compose.yml -f docker-compose-production.yml up -d --build
+	docker-compose exec -T app composer install --no-dev --optimize-autoloader
+	docker-compose exec -T app bin/console cache:clear
+	docker-compose exec -T app bin/console doctrine:schema:update --force
+
+up: docker-up permissions
+
+down: docker-down
+
+docker-up:
+	docker-compose up -d
+
+docker-down:
+	docker-compose down
+
+permissions:
+	docker-compose exec -T app chown -R www-data var
+
+logs:
+	docker-compose logs -f
 
 composer:
-	docker-compose run app composer install
+	docker-compose exec -T app composer install
 
-migrate:
-	docker-compose run app php bin/console doctrine:migrations:migrate
+shell:
+	docker-compose exec app sh
 
-fixtures:
-	docker-compose run app php bin/console doctrine:fixtures:load
-
-db:
-	docker-compose run app sqlite3 var/data.db
-
-app:
-	docker-compose run app sh
-
-encore:
-	docker-compose run node yarn run encore dev
-
-watch:
-	docker-compose run node yarn run encore dev --watch
-
-yarn:
-	docker-compose run node yarn install
-
-node:
-	docker-compose run node bash
+schema:
+	docker-compose exec -T app php bin/console doctrine:schema:update --force

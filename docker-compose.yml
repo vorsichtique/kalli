@@ -4,11 +4,14 @@ services:
   app:
     image: malulu/php-7.1:latest
     environment:
-      - DATABASE_URL=sqlite:///%kernel.project_dir%/var/data.db
+      - DATABASE_URL=mysql://root:${DB_PW}@servus_db_1:3306/kalli
       - LOCALE=en
     volumes:
       - .:/srv/symfony:rw
-  nginx:
+    networks:
+      - private
+      - shared
+  web:
     build:
       context: ./docker/nginx
       dockerfile: ./Dockerfile
@@ -16,9 +19,26 @@ services:
         - 80
     volumes:
       - ./public:/srv/symfony/public:ro
+    environment:
+      - VIRTUAL_HOST=kalli-staging.${HOSTNAME}
+      - LETSENCRYPT_HOST=kalli-staging.${HOSTNAME}
+      - LETSENCRYPT_EMAIL=${EMAIL_ADMIN}
+    networks:
+      - reverse-proxy
+      - private
+      - shared
   node:
     image: "node:8"
     user: "root"
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
+networks:
+  reverse-proxy:
+    external:
+      name: reverseproxy_default
+  shared:
+    external:
+      name: shared
+  private:
+    driver: bridge

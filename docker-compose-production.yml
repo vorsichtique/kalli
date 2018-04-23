@@ -4,3 +4,7 @@ services:
   app:
     environment:
       - APP_ENV=prod
+  web:
+    environment:
+      - VIRTUAL_HOST=kalli.${HOSTNAME}
+      - LETSENCRYPT_HOST=kalli.${HOSTNAME}
